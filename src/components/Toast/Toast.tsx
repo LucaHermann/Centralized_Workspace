@@ -1,17 +1,18 @@
-export const Toast = ({
-  message,
-  className,
-}: {
-  message: string;
-  className?: string;
-}) => {
+import { useThemeStyles } from '../../hooks/useThemeStyles';
+
+export const Toast = ({ message }: { message: string }) => {
+  const { theme } = useThemeStyles();
+
   return (
     <div
-      className={`fixed top-4 right-4 p-4 bg-gray-900/80 backdrop-blur-sm 
-      border border-gray-700 rounded-lg shadow-xl transform transition-all 
-      duration-300 animate-fade-in text-white font-medium z-50 ${className}`}
+      className={`
+      fixed bottom-4 right-4 z-50
+      ${theme.MODAL} ${theme.BORDER}
+      px-6 py-3 rounded-lg shadow-xl
+      animate-fade-in backdrop-blur-sm
+    `}
     >
-      <p>{message}</p>
+      <p className={theme.TEXT}>{message}</p>
     </div>
   );
 };

@@ -1,5 +1,4 @@
-import { useContext } from 'react';
-import { DarkModeContext, themeColors } from '../../context/DarkModeContext';
+import { useThemeStyles } from '../../hooks/useThemeStyles';
 import { Button } from '../Button/Button';
 
 export const Modal = ({
@@ -17,15 +16,19 @@ export const Modal = ({
   setIsModalOpen: (isOpen: boolean) => void;
   setShowToast: (showToast: boolean) => void;
 }) => {
-  const { darkMode } = useContext(DarkModeContext);
-  const theme = darkMode ? themeColors.dark : themeColors.light;
+  const { theme, getGradientText } = useThemeStyles();
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
       <dialog
         open={isOpen}
-        className={`relative bg-gradient-to-r ${theme.accent} border border-gray-800 p-6 rounded-xl shadow-xl w-full max-w-md transform transition-all`}
+        aria-modal="true"
+        className={`
+          relative ${theme.MODAL} p-6 rounded-xl 
+          shadow-xl w-full max-w-md transform 
+          transition-all duration-300 animate-fade-in
+        `}
       >
         <div className="absolute top-4 right-4">
           <Button
@@ -35,18 +38,25 @@ export const Modal = ({
               setIsModalOpen(false);
               setShowToast(true);
             }}
-            className="!p-2 !text-xl hover:rotate-90"
+            className="!p-2 !text-xl hover:rotate-90 transition-transform duration-300"
           />
         </div>
-        <h2
-          className={`text-2xl font-bold bg-clip-text text-white bg-gradient-to-r ${theme.accent} mb-4`}
-        >
+        <h2 className={`text-2xl font-bold ${getGradientText(true)} mb-4`}>
           User Information
         </h2>
-        <p className="text-white">
-          Your name is {name} and your email is {email}
-        </p>
-        {message && <p className="text-white">Your message is {message}</p>}
+        <div className="space-y-3">
+          <p className={theme.TEXT}>
+            Your name is <span className={getGradientText()}>{name}</span>
+          </p>
+          <p className={theme.TEXT}>
+            Your email is <span className={getGradientText()}>{email}</span>
+          </p>
+          {message && (
+            <p className={theme.TEXT}>
+              Your message is <span className={getGradientText()}>{message}</span>
+            </p>
+          )}
+        </div>
       </dialog>
     </div>
   );
