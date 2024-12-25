@@ -1,6 +1,4 @@
-import { useContext } from 'react';
-
-import { DarkModeContext, themeColors } from '../../context/DarkModeContext';
+import { useThemeStyles } from '../../hooks/useThemeStyles';
 
 export const Card = ({
   title,
@@ -15,35 +13,21 @@ export const Card = ({
   hrefLink?: string;
   hrefText?: string;
 }) => {
-  const { darkMode } = useContext(DarkModeContext);
-  const theme = darkMode ? themeColors.dark : themeColors.light;
+  const { theme, getGradientText, getCardStyles } = useThemeStyles();
 
   return (
     <div
-      className={`
-        hover:transform hover:scale-102 hover:shadow-2xl
-        ${darkMode ? 'hover:shadow-blue-500/30' : 'hover:shadow-blue-200/40'}
-        backdrop-blur-sm ${theme.card} rounded-xl p-6 transition-all duration-300
-        transform hover:-translate-y-2 border ${theme.border}
-        `}
+      className={`${getCardStyles()} rounded-xl p-6 transform hover:-translate-y-2`}
     >
       <div className="space-y-4">
-        <h3
-          className={`${titleClassName ? titleClassName : 'text-xl'} font-bold animate-text bg-clip-text text-transparent bg-gradient-to-r ${theme.accent}`}
-        >
+        <h3 className={`${getGradientText(true)} ${titleClassName}`}>
           {title}
         </h3>
-
-        <p className={theme.text}>{description}</p>
-
+        <p className={theme.TEXT}>{description}</p>
         {hrefLink && (
           <a
             href={hrefLink}
-            className={`inline-flex items-center ${
-              darkMode
-                ? 'text-cyan-400 hover:text-cyan-300'
-                : 'text-orange-500 hover:text-orange-600'
-            } transition-colors duration-300 animate-text`}
+            className={`inline-flex items-center ${theme.HOVER} transition-colors duration-300`}
           >
             <span>{hrefText}</span>
             <svg

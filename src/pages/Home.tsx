@@ -1,10 +1,13 @@
 import { useContext } from 'react';
 import { Card } from '../components/Card/Card';
 import { DarkModeContext, themeColors } from '../context/DarkModeContext';
+import { useThemeStyles } from '../hooks/useThemeStyles';
 
 export const Home = () => {
   const { darkMode } = useContext(DarkModeContext);
   const theme = darkMode ? themeColors.dark : themeColors.light;
+  const { getBackgroundGradient, getHeroTitle, getSectionTitle } =
+    useThemeStyles();
 
   const features = [
     {
@@ -43,16 +46,12 @@ export const Home = () => {
   ];
 
   return (
-    <div
-      className={`min-h-screen bg-gradient-to-br ${theme.background} ${theme.text}`}
-    >
+    <div className={getBackgroundGradient()}>
       {/* Hero Section */}
       <div className="relative overflow-hidden py-20 px-4 sm:px-6 lg:px-8">
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-30" />
         <div className="relative mx-auto max-w-7xl text-center">
-          <h1
-            className={`text-5xl md:text-7xl lg:text-9xl mb-8 font-bold text-transparent bg-clip-text animate-text bg-gradient-text bg-300% bg-gradient-to-r ${theme.accent}`}
-          >
+          <h1 className={getHeroTitle()}>
             Welcome to My Centralized Workspace
           </h1>
         </div>
@@ -69,11 +68,7 @@ export const Home = () => {
 
       {/* Features Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h2
-          className={`text-3xl font-bold mb-8 text-transparent bg-clip-text animate-text bg-gradient-text bg-300% bg-gradient-to-r ${theme.accent}`}
-        >
-          Key Features
-        </h2>
+        <h2 className={getSectionTitle()}>Key Features</h2>
         <div className="grid md:grid-cols-3 gap-6 mb-16">
           {features.map((feature, index) => (
             <Card
